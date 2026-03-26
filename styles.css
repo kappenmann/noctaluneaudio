@@ -501,10 +501,21 @@ p {
 }
 
 .form-note,
+.form-privacy,
 .footer-copy,
 .footer-meta,
 .demo-copy {
   font-size: 0.94rem;
+}
+
+.form-privacy {
+  color: #b6a896;
+}
+
+.form-privacy a {
+  color: var(--muted-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }
 
 .form-feedback {
@@ -560,6 +571,97 @@ p {
 
 .footer-meta {
   color: #988c7e;
+}
+
+.legal-page .site-header {
+  position: sticky;
+}
+
+.legal-main {
+  padding: 4.5rem 0 5rem;
+}
+
+.legal-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.legal-intro,
+.legal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.legal-intro {
+  padding: 1.8rem;
+  background:
+    radial-gradient(circle at top left, rgba(194, 143, 85, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(36, 29, 29, 0.96), rgba(22, 18, 18, 0.96));
+}
+
+.legal-intro h1 {
+  max-width: none;
+  font-size: clamp(2.5rem, 4vw, 4rem);
+  line-height: 1.02;
+}
+
+.legal-intro p {
+  max-width: 70ch;
+  margin-top: 0.9rem;
+}
+
+.legal-card {
+  padding: 1.8rem;
+  background:
+    linear-gradient(180deg, rgba(40, 30, 29, 0.96), rgba(22, 18, 18, 0.94));
+}
+
+.legal-card + .legal-card {
+  margin-top: 0;
+}
+
+.legal-card h2,
+.legal-card h3 {
+  max-width: none;
+}
+
+.legal-card h2 {
+  margin-bottom: 0.9rem;
+  font-size: clamp(2rem, 3vw, 2.8rem);
+}
+
+.legal-card h3 {
+  margin-top: 1.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.08rem;
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.legal-card p + p,
+.legal-card ul + p,
+.legal-card p + ul {
+  margin-top: 0.8rem;
+}
+
+.legal-card ul {
+  margin: 0.6rem 0 0;
+  padding-left: 1.15rem;
+  color: var(--muted);
+}
+
+.legal-card li + li {
+  margin-top: 0.45rem;
+}
+
+.legal-card a {
+  color: var(--muted-strong);
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
 }
 
 .reveal {
@@ -812,6 +914,19 @@ p {
 
   .site-footer {
     margin: 0 0.75rem 0.75rem;
+  }
+
+  .legal-main {
+    padding: 3rem 0 3.4rem;
+  }
+
+  .legal-intro,
+  .legal-card {
+    padding: 1.25rem;
+  }
+
+  .legal-intro h1 {
+    font-size: clamp(2rem, 8vw, 2.9rem);
   }
 }
 
