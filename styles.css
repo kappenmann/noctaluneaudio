@@ -680,13 +680,56 @@ p {
   }
 
   .hero {
-    padding-top: 0.55rem;
+    padding-top: 0.35rem;
+  }
+
+  .hero-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .hero-copy {
+    display: contents;
+  }
+
+  .hero-actions {
+    display: contents;
+  }
+
+  .hero-copy .eyebrow {
+    order: 1;
+  }
+
+  .hero-copy h1 {
+    order: 2;
+  }
+
+  .hero-subheadline {
+    order: 3;
+  }
+
+  .hero-actions .button-primary {
+    order: 4;
+  }
+
+  .hero-visual {
+    order: 5;
+  }
+
+  .hero-actions .button-secondary {
+    order: 6;
+  }
+
+  .hero-points {
+    order: 7;
   }
 
   h1 {
     max-width: none;
-    font-size: clamp(2.2rem, 10vw, 3.5rem);
-    line-height: 1.02;
+    font-size: clamp(1.95rem, 8.7vw, 3rem);
+    line-height: 0.98;
+    letter-spacing: -0.01em;
   }
 
   h2 {
@@ -704,26 +747,28 @@ p {
   }
 
   .hero-subheadline {
-    font-size: 0.98rem;
-    margin-top: 0.85rem;
-    line-height: 1.55;
+    font-size: 0.94rem;
+    margin-top: 0.55rem;
+    line-height: 1.5;
   }
 
-  .hero-actions {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-    margin-top: 1.2rem;
-  }
-
-  .button {
+  .hero-actions .button-primary,
+  .hero-actions .button-secondary {
     width: 100%;
     min-height: 3.1rem;
   }
 
+  .hero-actions .button-primary {
+    margin-top: 0.7rem;
+  }
+
+  .hero-actions .button-secondary {
+    margin-top: 0.35rem;
+  }
+
   .hero-points {
     gap: 0.6rem;
-    margin-top: 0.95rem;
+    margin-top: 0.45rem;
   }
 
   .hero-points li {
@@ -800,34 +845,38 @@ p {
   }
 
   .hero {
-    padding-top: 0.35rem;
+    padding-top: 0.2rem;
   }
 
   .hero-grid {
-    gap: 1.15rem;
+    gap: 0.8rem;
   }
 
   h1 {
-    font-size: clamp(2rem, 9vw, 2.8rem);
-    line-height: 1.01;
+    font-size: clamp(1.78rem, 8vw, 2.45rem);
+    line-height: 0.97;
   }
 
   .hero-subheadline {
-    font-size: 0.94rem;
-    margin-top: 0.72rem;
+    font-size: 0.9rem;
+    margin-top: 0.45rem;
   }
 
-  .hero-actions {
-    margin-top: 1rem;
+  .hero-actions .button-primary {
+    margin-top: 0.55rem;
+  }
+
+  .hero-actions .button-secondary {
+    margin-top: 0.3rem;
   }
 
   .hero-points {
-    margin-top: 0.8rem;
+    margin-top: 0.3rem;
   }
 
   .hero-points li {
-    font-size: 0.86rem;
-    padding: 0.68rem 0.85rem;
+    font-size: 0.82rem;
+    padding: 0.62rem 0.8rem;
   }
 
   .hero-visual {
