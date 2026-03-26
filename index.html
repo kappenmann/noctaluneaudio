@@ -169,11 +169,10 @@
           <form
             class="signup-form"
             id="email-signup-form"
-            action="#brevo-endpoint-placeholder"
+            action="/api/subscribe"
             method="post"
             novalidate
           >
-            <!-- Replace the action URL above with your Brevo form endpoint or custom handler. -->
             <label class="sr-only" for="email">Email address</label>
             <input
               type="email"
@@ -183,9 +182,9 @@
               autocomplete="email"
               required
             >
-            <button class="button button-primary" type="submit">Notify Me</button>
+            <button class="button button-primary" id="signup-submit" type="submit">Notify Me</button>
             <p class="form-note">
-              Placeholder form structure ready for Brevo integration. Add your endpoint before going live.
+              Join the early access list for release updates, demos, and future Noctalune Audio news.
             </p>
             <p class="form-privacy">
               Mit dem Absenden stimme ich zu, dass meine Angaben zur Bearbeitung meiner Anfrage gespeichert werden. Details in der

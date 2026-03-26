@@ -307,6 +307,12 @@ p {
   transform: translateY(-1px);
 }
 
+.button:disabled {
+  cursor: wait;
+  opacity: 0.88;
+  transform: none;
+}
+
 .button-primary {
   background: linear-gradient(135deg, #d8b16e 0%, #b67c49 55%, #88452c 100%);
   color: #160f0d;
@@ -500,6 +506,10 @@ p {
   outline-offset: 2px;
 }
 
+.signup-form input:disabled {
+  opacity: 0.72;
+}
+
 .form-note,
 .form-privacy,
 .footer-copy,
@@ -521,6 +531,14 @@ p {
 .form-feedback {
   min-height: 1.5rem;
   color: var(--muted-strong);
+}
+
+.form-feedback.is-success {
+  color: #e2c98f;
+}
+
+.form-feedback.is-error {
+  color: #f0b8a2;
 }
 
 .story-panel {
