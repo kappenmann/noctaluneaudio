@@ -651,7 +651,7 @@ p {
     margin-left: 0;
     padding: 0;
     overflow: visible;
-    transform: translate(-1.2rem, -16.5%);
+    transform: translate(-1.2rem, -24.75%);
   }
 
   .site-nav {
@@ -786,7 +786,7 @@ p {
 
   .brand-lockup {
     margin-left: 0;
-    transform: translate(-0.85rem, -16.5%);
+    transform: translate(-0.85rem, -24.75%);
   }
 
   .brand-logo {
