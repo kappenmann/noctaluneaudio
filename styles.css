@@ -663,7 +663,7 @@ p {
 
   .brand-logo {
     width: auto;
-    height: clamp(84px, 22.5vw, 114px);
+    height: clamp(126px, 33.75vw, 171px);
   }
 
   .hero-visual {
@@ -785,7 +785,7 @@ p {
   }
 
   .brand-logo {
-    height: clamp(72px, 21vw, 96px);
+    height: clamp(108px, 31.5vw, 144px);
   }
 
   .site-nav {
