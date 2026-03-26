@@ -646,12 +646,12 @@ p {
 
   .brand-lockup {
     position: absolute;
-    left: 50%;
+    left: 0;
     top: 0;
     margin-left: 0;
     padding: 0;
     overflow: visible;
-    transform: translate(-50%, 0.42rem);
+    transform: translate(-1.2rem, -33%);
   }
 
   .site-nav {
@@ -786,7 +786,7 @@ p {
 
   .brand-lockup {
     margin-left: 0;
-    transform: translate(-50%, 0.34rem);
+    transform: translate(-0.85rem, -33%);
   }
 
   .brand-logo {
