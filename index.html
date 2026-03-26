@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="description"
+    content="NoctaTape by Noctalune Audio brings analog tape warmth, wobble, and character to modern LoFi, indie, and ambient productions."
+  >
+  <title>Noctalune Audio | NoctaTape</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="page-shell">
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="brand-lockup" href="#hero" aria-label="Noctalune Audio home">
+          <img
+            class="brand-logo"
+            src="Logo.png"
+            alt="Noctalune Audio"
+            width="420"
+            height="236"
+          >
+          <span class="sr-only">Noctalune Audio</span>
+        </a>
+        <nav class="site-nav" aria-label="Primary navigation">
+          <a href="#features">Features</a>
+          <a href="#demos">Demos</a>
+          <a href="#signup">Early Access</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero section" id="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy reveal">
+            <p class="eyebrow">Boutique Tape Character For Modern Production</p>
+            <h1>NoctaTape - Analog Tape Warmth for Modern LoFi &amp; Indie Sounds</h1>
+            <p class="hero-subheadline">
+              Add subtle saturation, wobble and character to your sound - inspired by vintage tape machines.
+            </p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#signup">Get Early Access</a>
+              <a class="button button-secondary" href="#demos">Hear The Demos</a>
+            </div>
+            <ul class="hero-points" aria-label="Product highlights">
+              <li>Warmth that stays musical</li>
+              <li>Built for intimate, textured production</li>
+              <li>Simple controls with immediate feel</li>
+            </ul>
+          </div>
+
+          <div class="hero-visual reveal" aria-labelledby="product-visual-title">
+            <div class="plugin-stage panel-glass">
+              <p class="sr-only" id="product-visual-title">NoctaTape plugin screenshot</p>
+              <img
+                class="plugin-stage__image"
+                src="Screenshot.png"
+                alt="NoctaTape plugin interface"
+                width="810"
+                height="498"
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features section" id="features">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">What It Brings To A Mix</p>
+            <h2>Character that feels lived-in, not overdone.</h2>
+            <p>
+              NoctaTape is shaped for producers who want softness, movement, and detail without fighting a crowded interface.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card reveal">
+              <span class="feature-icon">01</span>
+              <h3>Analog-style saturation</h3>
+              <p>
+                Add rounded harmonics and gentle density that help drums, keys, guitars, and buses sit with more depth.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <span class="feature-icon">02</span>
+              <h3>Wobble &amp; tape modulation</h3>
+              <p>
+                Introduce movement and subtle instability for nostalgic pitch drift, softened transients, and human feel.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <span class="feature-icon">03</span>
+              <h3>Simple musical controls</h3>
+              <p>
+                Dial in tone quickly with an interface designed to support fast decisions and easy experimentation.
+              </p>
+            </article>
+
+            <article class="feature-card reveal">
+              <span class="feature-icon">04</span>
+              <h3>Designed for LoFi, indie and ambient textures</h3>
+              <p>
+                Built with intimate production styles in mind, from tape-soft vocals to hazy pads and worn melodic loops.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="demos section" id="demos">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="eyebrow">Audio Demos</p>
+            <h2>Let the texture speak for itself.</h2>
+            <p>
+              Use the placeholders below for before/after embeds, hosted audio players, or short comparison clips.
+            </p>
+          </div>
+
+          <div class="demo-grid">
+            <article class="demo-card reveal">
+              <p class="demo-label">Before</p>
+              <div class="demo-placeholder" role="img" aria-label="Before demo placeholder">
+                Placeholder for dry audio embed
+              </div>
+              <p class="demo-copy">
+                Add your clean source here so visitors can hear the untreated signal first.
+              </p>
+            </article>
+
+            <article class="demo-card reveal">
+              <p class="demo-label">After NoctaTape</p>
+              <div class="demo-placeholder" role="img" aria-label="After demo placeholder">
+                Placeholder for processed audio embed
+              </div>
+              <p class="demo-copy">
+                Add the processed version here to highlight warmth, wobble, and movement.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="signup section" id="signup">
+        <div class="container signup-panel reveal">
+          <div class="signup-copy">
+            <p class="eyebrow">Early Access</p>
+            <h2>Join the list for launch updates and first access.</h2>
+            <p>
+              Collect signups for release news, demo drops, and future Noctalune Audio updates.
+            </p>
+          </div>
+
+          <form
+            class="signup-form"
+            id="email-signup-form"
+            action="#brevo-endpoint-placeholder"
+            method="post"
+            novalidate
+          >
+            <!-- Replace the action URL above with your Brevo form endpoint or custom handler. -->
+            <label class="sr-only" for="email">Email address</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+              required
+            >
+            <button class="button button-primary" type="submit">Notify Me</button>
+            <p class="form-note">
+              Placeholder form structure ready for Brevo integration. Add your endpoint before going live.
+            </p>
+            <p class="form-feedback" id="form-feedback" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="story section" id="story">
+        <div class="container story-grid">
+          <div class="story-copy reveal">
+            <p class="eyebrow">About The Brand</p>
+            <h2>Noctalune Audio builds tools for tone, atmosphere, and emotional detail.</h2>
+            <p>
+              We make audio software for producers chasing warmth, softness, and character in modern sessions.
+              The goal is not to overwhelm a workflow, but to offer a few musical controls that make a track feel more human.
+            </p>
+            <p>
+              NoctaTape is part of that idea: a focused tape color tool for artists working in LoFi, indie, ambient, and other texture-driven styles.
+            </p>
+          </div>
+
+          <aside class="story-panel panel-glass reveal">
+            <p class="story-panel__label">Launch checklist</p>
+            <ul class="story-panel__list">
+              <li>The real NoctaTape screenshot and Noctalune Audio logo are now wired into the page.</li>
+              <li>Embed real before/after audio players in the demo section.</li>
+              <li>Replace the signup form action with your Brevo endpoint.</li>
+              <li>Update legal links in the footer before publishing.</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <p class="footer-brand">Noctalune Audio</p>
+          <p class="footer-copy">Atmospheric tools for modern producers.</p>
+        </div>
+
+        <div class="footer-links">
+          <a href="#imprint-placeholder">Imprint</a>
+          <a href="#privacy-placeholder">Privacy Policy</a>
+        </div>
+
+        <p class="footer-meta">
+          <span id="current-year"></span> Noctalune Audio. Remaining demo, form, and legal placeholders are clearly marked.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
