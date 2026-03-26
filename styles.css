@@ -635,17 +635,20 @@ p {
   .header-inner {
     display: grid;
     grid-template-columns: 1fr;
-    justify-items: start;
+    justify-items: center;
     gap: 0.28rem;
     height: auto;
     padding: 0.35rem 0 0.32rem;
+    overflow: visible;
   }
 
   .brand-lockup {
     position: relative;
-    margin-left: -0.55rem;
+    margin-left: 0;
     padding: 0;
-    transform: translateY(0.12rem);
+    justify-self: center;
+    overflow: visible;
+    transform: translateY(0.42rem);
   }
 
   .site-nav {
@@ -660,7 +663,7 @@ p {
 
   .brand-logo {
     width: auto;
-    height: clamp(56px, 15vw, 76px);
+    height: clamp(84px, 22.5vw, 114px);
   }
 
   .hero-visual {
@@ -772,15 +775,17 @@ p {
   .header-inner {
     gap: 0.24rem;
     padding: 0.28rem 0 0.26rem;
+    justify-items: center;
   }
 
   .brand-lockup {
-    margin-left: -0.35rem;
-    transform: translateY(0.08rem);
+    margin-left: 0;
+    justify-self: center;
+    transform: translateY(0.34rem);
   }
 
   .brand-logo {
-    height: clamp(48px, 14vw, 62px);
+    height: clamp(72px, 21vw, 96px);
   }
 
   .site-nav {
