@@ -637,7 +637,7 @@ p {
     position: relative;
     display: flex;
     justify-content: flex-end;
-    align-items: flex-start;
+    align-items: center;
     gap: 0;
     height: 3.4rem;
     padding: 0.18rem 0 0.12rem;
@@ -658,6 +658,7 @@ p {
     position: relative;
     z-index: 1;
     justify-content: flex-end;
+    align-items: center;
     flex-wrap: wrap;
     gap: 0.38rem 0.72rem;
     font-size: 0.77rem;
