@@ -211,7 +211,7 @@ input {
 .hero-grid,
 .story-grid {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 1.02fr);
-  align-items: start;
+  align-items: center;
 }
 
 .hero-grid {
@@ -331,38 +331,6 @@ p {
   color: var(--muted-strong);
 }
 
-.hero-media {
-  display: grid;
-  gap: 0.9rem;
-  align-content: start;
-}
-
-.hero-points {
-  display: grid;
-  gap: 0.7rem;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-}
-
-.hero-points li {
-  position: relative;
-  padding-left: 1rem;
-  color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.45;
-}
-
-.hero-points li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.72em;
-  width: 0.45rem;
-  height: 1px;
-  background: linear-gradient(90deg, rgba(214, 183, 118, 0.95), rgba(214, 183, 118, 0.15));
-}
-
 .panel-glass,
 .feature-card,
 .demo-card,
@@ -382,8 +350,8 @@ p {
 
 .hero-visual {
   position: relative;
-  align-self: start;
-  transform: translateY(0.1rem);
+  align-self: center;
+  transform: translateY(1.35rem);
 }
 
 .hero-visual::before {
@@ -800,11 +768,6 @@ p {
     padding-top: 0;
   }
 
-  .hero-media {
-    width: min(100%, 38rem);
-    margin: 0 auto;
-  }
-
   .hero-visual {
     width: min(100%, 38rem);
     margin: 0 auto;
@@ -913,10 +876,6 @@ p {
     order: 6;
   }
 
-  .hero-media {
-    order: 5;
-  }
-
   h1 {
     max-width: none;
     font-size: clamp(1.72rem, 7.7vw, 2.65rem);
@@ -956,25 +915,6 @@ p {
 
   .hero-actions .button-secondary {
     margin-top: 0.18rem;
-  }
-
-  .hero-points {
-    gap: 0.6rem;
-    margin-top: 0.15rem;
-  }
-
-  .hero-points li {
-    width: 100%;
-    font-size: 0.84rem;
-    padding: 0.5rem 0.78rem 0.5rem 1rem;
-    color: var(--muted);
-    background: rgba(255, 244, 228, 0.025);
-    border-color: rgba(186, 145, 102, 0.09);
-  }
-
-  .hero-points li::before {
-    left: 0.4rem;
-    top: 1.1rem;
   }
 
   .plugin-stage {
@@ -1088,22 +1028,8 @@ p {
     margin-top: 0.14rem;
   }
 
-  .hero-points {
-    margin-top: 0.18rem;
-  }
-
-  .hero-points li {
-    font-size: 0.79rem;
-    padding: 0.52rem 0.76rem;
-  }
-
   .hero-visual {
     width: 100%;
-  }
-
-  .hero-media {
-    width: 100%;
-    gap: 0.7rem;
   }
 
   .plugin-stage {
