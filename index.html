@@ -128,28 +128,30 @@
             <p class="eyebrow">Audio Demos</p>
             <h2>Let the texture speak for itself.</h2>
             <p>
-              Use the placeholders below for before/after embeds, hosted audio players, or short comparison clips.
+              Compare the untreated guitar signal with the NoctaTape-processed version directly on the page.
             </p>
           </div>
 
           <div class="demo-grid">
             <article class="demo-card reveal">
               <p class="demo-label">Before</p>
-              <div class="demo-placeholder" role="img" aria-label="Before demo placeholder">
-                Placeholder for dry audio embed
-              </div>
+              <audio class="demo-player" controls preload="none">
+                <source src="media/Clean_Guitar.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
               <p class="demo-copy">
-                Add your clean source here so visitors can hear the untreated signal first.
+                Clean guitar signal without additional NoctaTape processing.
               </p>
             </article>
 
             <article class="demo-card reveal">
               <p class="demo-label">After NoctaTape</p>
-              <div class="demo-placeholder" role="img" aria-label="After demo placeholder">
-                Placeholder for processed audio embed
-              </div>
+              <audio class="demo-player" controls preload="none">
+                <source src="media/Clean_Guitar_worn_deck.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
               <p class="demo-copy">
-                Add the processed version here to highlight warmth, wobble, and movement.
+                Guitar processed with NoctaTape for added warmth, motion, and worn deck character.
               </p>
             </article>
           </div>
@@ -210,16 +212,6 @@
               NoctaTape is part of that idea: a focused tape color tool for artists working in LoFi, indie, ambient, and other texture-driven styles.
             </p>
           </div>
-
-          <aside class="story-panel panel-glass reveal">
-            <p class="story-panel__label">Launch checklist</p>
-            <ul class="story-panel__list">
-              <li>The real NoctaTape screenshot and Noctalune Audio logo are now wired into the page.</li>
-              <li>Embed real before/after audio players in the demo section.</li>
-              <li>Replace the signup form action with your Brevo endpoint.</li>
-              <li>Update legal links in the footer before publishing.</li>
-            </ul>
-          </aside>
         </div>
       </section>
     </main>

@@ -473,6 +473,13 @@ p {
   text-align: center;
 }
 
+.demo-player {
+  width: 100%;
+  margin: 1rem 0;
+  border-radius: var(--radius-sm);
+  background: rgba(10, 8, 9, 0.7);
+}
+
 .signup-panel {
   grid-template-columns: minmax(0, 1fr) minmax(280px, 460px);
   align-items: center;
