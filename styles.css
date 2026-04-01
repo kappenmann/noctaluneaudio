@@ -215,14 +215,10 @@ input {
 }
 
 .hero-grid {
-  grid-template-areas:
-    "copy visual"
-    ". points";
   gap: 1rem;
 }
 
 .hero-copy {
-  grid-area: copy;
   padding-top: 0;
 }
 
@@ -335,12 +331,17 @@ p {
   color: var(--muted-strong);
 }
 
+.hero-media {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
 .hero-points {
-  grid-area: points;
   display: grid;
   gap: 0.7rem;
   padding: 0;
-  margin: 0.7rem 0 0;
+  margin: 0;
   list-style: none;
 }
 
@@ -380,7 +381,6 @@ p {
 }
 
 .hero-visual {
-  grid-area: visual;
   position: relative;
   align-self: start;
   transform: translateY(0.1rem);
@@ -793,15 +793,16 @@ p {
   }
 
   .hero-grid {
-    grid-template-areas:
-      "copy"
-      "visual"
-      "points";
     gap: 1.35rem;
   }
 
   .hero-copy {
     padding-top: 0;
+  }
+
+  .hero-media {
+    width: min(100%, 38rem);
+    margin: 0 auto;
   }
 
   .hero-visual {
@@ -912,8 +913,8 @@ p {
     order: 6;
   }
 
-  .hero-points {
-    order: 7;
+  .hero-media {
+    order: 5;
   }
 
   h1 {
@@ -959,7 +960,7 @@ p {
 
   .hero-points {
     gap: 0.6rem;
-    margin-top: 0.22rem;
+    margin-top: 0.15rem;
   }
 
   .hero-points li {
@@ -1098,6 +1099,11 @@ p {
 
   .hero-visual {
     width: 100%;
+  }
+
+  .hero-media {
+    width: 100%;
+    gap: 0.7rem;
   }
 
   .plugin-stage {

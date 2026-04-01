@@ -2,6 +2,7 @@ const yearTarget = document.getElementById("current-year");
 const signupForm = document.getElementById("email-signup-form");
 const feedback = document.getElementById("form-feedback");
 const submitButton = document.getElementById("signup-submit");
+const demoPlayers = document.querySelectorAll(".demo-player");
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -104,4 +105,16 @@ if ("IntersectionObserver" in window && revealElements.length > 0) {
   revealElements.forEach((element) => observer.observe(element));
 } else {
   revealElements.forEach((element) => element.classList.add("is-visible"));
+}
+
+if (demoPlayers.length > 0) {
+  demoPlayers.forEach((player) => {
+    player.addEventListener("play", () => {
+      demoPlayers.forEach((otherPlayer) => {
+        if (otherPlayer !== player) {
+          otherPlayer.pause();
+        }
+      });
+    });
+  });
 }
