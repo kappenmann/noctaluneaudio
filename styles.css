@@ -211,14 +211,18 @@ input {
 .hero-grid,
 .story-grid {
   grid-template-columns: minmax(0, 1fr) minmax(320px, 1.02fr);
-  align-items: center;
+  align-items: start;
 }
 
 .hero-grid {
+  grid-template-areas:
+    "copy visual"
+    ". points";
   gap: 1rem;
 }
 
 .hero-copy {
+  grid-area: copy;
   padding-top: 0;
 }
 
@@ -332,21 +336,30 @@ p {
 }
 
 .hero-points {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  grid-area: points;
+  display: grid;
+  gap: 0.7rem;
   padding: 0;
-  margin: 1.1rem 0 0;
+  margin: 0.7rem 0 0;
   list-style: none;
 }
 
 .hero-points li {
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  background: rgba(255, 244, 228, 0.035);
-  border: 1px solid rgba(186, 145, 102, 0.12);
-  color: var(--muted-strong);
-  font-size: 0.92rem;
+  position: relative;
+  padding-left: 1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.hero-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 0.45rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(214, 183, 118, 0.95), rgba(214, 183, 118, 0.15));
 }
 
 .panel-glass,
@@ -367,9 +380,10 @@ p {
 }
 
 .hero-visual {
+  grid-area: visual;
   position: relative;
-  align-self: center;
-  transform: translateY(-0.3rem);
+  align-self: start;
+  transform: translateY(0.1rem);
 }
 
 .hero-visual::before {
@@ -779,6 +793,10 @@ p {
   }
 
   .hero-grid {
+    grid-template-areas:
+      "copy"
+      "visual"
+      "points";
     gap: 1.35rem;
   }
 
@@ -946,12 +964,16 @@ p {
 
   .hero-points li {
     width: 100%;
-    text-align: center;
     font-size: 0.84rem;
-    padding: 0.5rem 0.78rem;
+    padding: 0.5rem 0.78rem 0.5rem 1rem;
     color: var(--muted);
     background: rgba(255, 244, 228, 0.025);
     border-color: rgba(186, 145, 102, 0.09);
+  }
+
+  .hero-points li::before {
+    left: 0.4rem;
+    top: 1.1rem;
   }
 
   .plugin-stage {
