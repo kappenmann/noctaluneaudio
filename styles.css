@@ -865,11 +865,11 @@ p {
   }
 
   .hero-actions .button-primary {
-    order: 4;
+    order: 5;
   }
 
   .hero-visual {
-    order: 5;
+    order: 4;
   }
 
   .hero-actions .button-secondary {
