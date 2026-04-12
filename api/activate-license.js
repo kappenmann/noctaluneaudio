@@ -1,4 +1,4 @@
-const LEMON_VALIDATE_URL = "https://api.lemonsqueezy.com/v1/licenses/validate";
+const LEMON_ACTIVATE_URL = "https://api.lemonsqueezy.com/v1/licenses/activate";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 function sendJson(response, status, payload) {
@@ -7,12 +7,8 @@ function sendJson(response, status, payload) {
   response.json(payload);
 }
 
-function extractLicenseKey(body) {
-  if (!body || typeof body !== "object") {
-    return "";
-  }
-
-  return typeof body.licenseKey === "string" ? body.licenseKey.trim() : "";
+function extractString(value) {
+  return typeof value === "string" ? value.trim() : "";
 }
 
 function extractLicenseeName(payload) {
@@ -28,38 +24,43 @@ module.exports = async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
     return sendJson(response, 405, {
-      valid: false,
+      activated: false,
       error: "Method not allowed."
     });
   }
 
-  // Kept as a required server-side Vercel env var for this integration setup.
-  // It is never exposed to the client.
+  // Kept as a required server-side Vercel env var for deployment parity with the licensing backend.
+  // It remains private and is never exposed to the client.
   const apiKey = process.env.LEMON_SQUEEZY_API_KEY;
 
   if (!apiKey) {
     return sendJson(response, 500, {
-      valid: false,
-      error: "License validation is not configured."
+      activated: false,
+      error: "License activation is not configured."
     });
   }
 
-  const licenseKey = extractLicenseKey(request.body);
+  const body = request.body && typeof request.body === "object" ? request.body : {};
+  const licenseKey = extractString(body.licenseKey);
+  const instanceName = extractString(body.instanceName);
 
   if (!licenseKey) {
     return sendJson(response, 400, {
-      valid: false,
+      activated: false,
       error: "A license key is required."
     });
   }
 
   try {
-    // Lemon Squeezy license validation expects a form-encoded body with `license_key`.
     const requestBody = new URLSearchParams({
       license_key: licenseKey
     });
 
-    const lemonResponse = await fetch(LEMON_VALIDATE_URL, {
+    if (instanceName) {
+      requestBody.append("instance_name", instanceName);
+    }
+
+    const lemonResponse = await fetch(LEMON_ACTIVATE_URL, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -71,18 +72,18 @@ module.exports = async function handler(request, response) {
     const lemonPayload = await lemonResponse.json().catch(() => null);
 
     if (!lemonResponse.ok) {
-      const isClientValidationFailure =
+      const isClientActivationFailure =
         lemonResponse.status === 400 ||
         lemonResponse.status === 404 ||
         lemonResponse.status === 422;
 
-      if (isClientValidationFailure) {
-        return sendJson(response, 200, { valid: false });
+      if (isClientActivationFailure) {
+        return sendJson(response, 200, { activated: false });
       }
 
       const errorPayload = {
-        valid: false,
-        error: "License validation service is currently unavailable."
+        activated: false,
+        error: "License activation service is currently unavailable."
       };
 
       if (!IS_PRODUCTION) {
@@ -92,9 +93,9 @@ module.exports = async function handler(request, response) {
       return sendJson(response, 502, errorPayload);
     }
 
-    if (!lemonPayload || typeof lemonPayload !== "object" || typeof lemonPayload.valid !== "boolean") {
+    if (!lemonPayload || typeof lemonPayload !== "object" || typeof lemonPayload.activated !== "boolean") {
       const malformedPayload = {
-        valid: false,
+        activated: false,
         error: "Received an unexpected response from the license service."
       };
 
@@ -106,17 +107,17 @@ module.exports = async function handler(request, response) {
     }
 
     return sendJson(response, 200, {
-      valid: lemonPayload.valid,
-      licenseeName: lemonPayload.valid ? extractLicenseeName(lemonPayload) : ""
+      activated: lemonPayload.activated,
+      licenseeName: lemonPayload.activated ? extractLicenseeName(lemonPayload) : ""
     });
   } catch (error) {
     const errorPayload = {
-      valid: false,
-      error: "Unable to validate the license at the moment."
+      activated: false,
+      error: "Unable to activate the license at the moment."
     };
 
     if (!IS_PRODUCTION) {
-      errorPayload.error = "Unable to validate the license at the moment. Please check the Lemon Squeezy connection.";
+      errorPayload.error = "Unable to activate the license at the moment. Please check the Lemon Squeezy connection.";
     }
 
     return sendJson(response, 500, errorPayload);
