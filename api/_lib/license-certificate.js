@@ -1,6 +1,8 @@
 const crypto = require("crypto");
 
 const PRODUCT_NAME = "NoctaTape";
+const SIGNATURE_ALGORITHM = "RSA-SHA256";
+const SIGNATURE_PADDING = crypto.constants.RSA_PKCS1_PADDING;
 
 function buildActivationCertificate({ licenseKey, licenseeName, instanceName }) {
   // Key order is intentionally fixed so JSON.stringify produces a deterministic string
@@ -26,15 +28,20 @@ function signActivationCertificate(certificateJson) {
   }
 
   const normalizedKey = privateKey.replace(/\\n/g, "\n");
-  const signer = crypto.createSign("RSA-SHA256");
-  signer.update(certificateJson, "utf8");
-  signer.end();
-
-  return signer.sign(normalizedKey, "base64");
+  return crypto.sign(
+    SIGNATURE_ALGORITHM,
+    Buffer.from(certificateJson, "utf8"),
+    {
+      key: normalizedKey,
+      padding: SIGNATURE_PADDING
+    }
+  ).toString("base64");
 }
 
 module.exports = {
   PRODUCT_NAME,
   buildActivationCertificate,
+  SIGNATURE_ALGORITHM,
+  SIGNATURE_PADDING,
   signActivationCertificate
 };

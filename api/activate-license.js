@@ -6,6 +6,8 @@ const {
 } = require("./_lib/lemon-license");
 const {
   buildActivationCertificate,
+  SIGNATURE_ALGORITHM,
+  SIGNATURE_PADDING,
   signActivationCertificate
 } = require("./_lib/license-certificate");
 
@@ -43,6 +45,9 @@ module.exports = async function handler(request, response) {
   }
 
   try {
+    const privateKeyLoaded = Boolean(process.env.LICENSE_SIGNING_PRIVATE_KEY);
+    console.log("[activate-license] signing key present:", privateKeyLoaded);
+
     const validateResult = await callLemonLicenseEndpoint(
       "https://api.lemonsqueezy.com/v1/licenses/validate",
       {
@@ -128,14 +133,30 @@ module.exports = async function handler(request, response) {
       licenseeName,
       instanceName
     });
+
+    console.log("[activate-license] activationCertificate:", activationCertificate);
+    console.log("[activate-license] signature config:", {
+      algorithm: SIGNATURE_ALGORITHM,
+      padding: SIGNATURE_PADDING === 1 ? "RSA_PKCS1_PADDING" : SIGNATURE_PADDING
+    });
+
     const activationSignature = signActivationCertificate(activationCertificate);
 
-    return sendJson(response, 200, {
+    const responseBody = {
       activated: lemonPayload.activated,
       licenseeName,
       activationCertificate,
       activationSignature
+    };
+
+    console.log("[activate-license] response shape:", {
+      activated: responseBody.activated,
+      licenseeName: responseBody.licenseeName,
+      activationCertificateLength: responseBody.activationCertificate.length,
+      activationSignatureLength: responseBody.activationSignature.length
     });
+
+    return sendJson(response, 200, responseBody);
   } catch (error) {
     const errorPayload = {
       activated: false,
