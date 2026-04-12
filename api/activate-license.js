@@ -6,9 +6,12 @@ const {
 } = require("./_lib/lemon-license");
 const {
   buildActivationCertificate,
+  getPublicKeyFingerprint,
+  loadPrivateKeyPem,
   SIGNATURE_ALGORITHM,
   SIGNATURE_PADDING,
-  signActivationCertificate
+  signActivationCertificate,
+  verifyActivationSignature
 } = require("./_lib/license-certificate");
 
 function sendJson(response, status, payload) {
@@ -45,8 +48,9 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const privateKeyLoaded = Boolean(process.env.LICENSE_SIGNING_PRIVATE_KEY);
-    console.log("[activate-license] signing key present:", privateKeyLoaded);
+    const privateKeyPem = loadPrivateKeyPem();
+    console.log("[activate-license] signing key present:", true);
+    console.log("[activate-license] public key fingerprint (sha256):", getPublicKeyFingerprint(privateKeyPem));
 
     const validateResult = await callLemonLicenseEndpoint(
       "https://api.lemonsqueezy.com/v1/licenses/validate",
@@ -137,10 +141,18 @@ module.exports = async function handler(request, response) {
     console.log("[activate-license] activationCertificate:", activationCertificate);
     console.log("[activate-license] signature config:", {
       algorithm: SIGNATURE_ALGORITHM,
-      padding: SIGNATURE_PADDING === 1 ? "RSA_PKCS1_PADDING" : SIGNATURE_PADDING
+      padding: SIGNATURE_PADDING,
+      encoding: "utf8-to-base64"
     });
 
-    const activationSignature = signActivationCertificate(activationCertificate);
+    const activationSignature = signActivationCertificate(activationCertificate, privateKeyPem);
+    const signatureSelfCheck = verifyActivationSignature(
+      activationCertificate,
+      activationSignature,
+      privateKeyPem
+    );
+
+    console.log("[activate-license] signature self-check:", signatureSelfCheck);
 
     const responseBody = {
       activated: lemonPayload.activated,
@@ -153,7 +165,8 @@ module.exports = async function handler(request, response) {
       activated: responseBody.activated,
       licenseeName: responseBody.licenseeName,
       activationCertificateLength: responseBody.activationCertificate.length,
-      activationSignatureLength: responseBody.activationSignature.length
+      activationSignatureLength: responseBody.activationSignature.length,
+      signatureSelfCheck
     });
 
     return sendJson(response, 200, responseBody);

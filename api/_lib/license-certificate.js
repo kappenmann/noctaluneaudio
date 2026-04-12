@@ -18,7 +18,7 @@ function buildActivationCertificate({ licenseKey, licenseeName, instanceName }) 
   return JSON.stringify(certificate);
 }
 
-function signActivationCertificate(certificateJson) {
+function loadPrivateKeyPem() {
   // Put your RSA private key into the Vercel environment variable LICENSE_SIGNING_PRIVATE_KEY.
   // Store the PEM as a multiline secret. If needed, escaped "\n" sequences are normalized below.
   const privateKey = process.env.LICENSE_SIGNING_PRIVATE_KEY;
@@ -27,15 +27,46 @@ function signActivationCertificate(certificateJson) {
     throw new Error("License signing key is not configured.");
   }
 
-  const normalizedKey = privateKey.replace(/\\n/g, "\n");
-  return crypto.sign(
-    SIGNATURE_ALGORITHM,
-    Buffer.from(certificateJson, "utf8"),
+  return privateKey.replace(/\\n/g, "\n");
+}
+
+function getPublicKeyFingerprint(privateKeyPem) {
+  const publicKeyPem = crypto.createPublicKey(privateKeyPem).export({
+    type: "spki",
+    format: "pem"
+  });
+
+  return crypto.createHash("sha256").update(publicKeyPem).digest("hex");
+}
+
+function signActivationCertificate(certificateJson, privateKeyPem) {
+  const signer = crypto.createSign(SIGNATURE_ALGORITHM);
+  signer.update(certificateJson, "utf8");
+  signer.end();
+
+  // This explicitly uses standard RSA PKCS#1 v1.5 padding, matching the JUCE-side expectation.
+  return signer.sign(
     {
-      key: normalizedKey,
+      key: privateKeyPem,
       padding: SIGNATURE_PADDING
-    }
-  ).toString("base64");
+    },
+    "base64"
+  );
+}
+
+function verifyActivationSignature(certificateJson, signatureBase64, privateKeyPem) {
+  const verifier = crypto.createVerify(SIGNATURE_ALGORITHM);
+  verifier.update(certificateJson, "utf8");
+  verifier.end();
+
+  return verifier.verify(
+    {
+      key: crypto.createPublicKey(privateKeyPem),
+      padding: SIGNATURE_PADDING
+    },
+    signatureBase64,
+    "base64"
+  );
 }
 
 module.exports = {
@@ -43,5 +74,8 @@ module.exports = {
   buildActivationCertificate,
   SIGNATURE_ALGORITHM,
   SIGNATURE_PADDING,
-  signActivationCertificate
+  getPublicKeyFingerprint,
+  loadPrivateKeyPem,
+  signActivationCertificate,
+  verifyActivationSignature
 };
