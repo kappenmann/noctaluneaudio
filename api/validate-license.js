@@ -1,5 +1,5 @@
-const LEMON_VALIDATE_URL = "https://api.lemonsqueezy.com/v1/licenses/validate";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const { callLemonLicenseEndpoint } = require("./_lib/lemon-license");
 
 function sendJson(response, status, payload) {
   response.status(status).setHeader("Content-Type", "application/json");
@@ -15,15 +15,6 @@ function extractLicenseKey(body) {
   return typeof body.licenseKey === "string" ? body.licenseKey.trim() : "";
 }
 
-function extractLicenseeName(payload) {
-  // Lemon Squeezy returns customer details in `meta`. Prefer the human-readable name,
-  // then fall back to the customer email, otherwise return an empty string.
-  const customerName = typeof payload?.meta?.customer_name === "string" ? payload.meta.customer_name.trim() : "";
-  const customerEmail = typeof payload?.meta?.customer_email === "string" ? payload.meta.customer_email.trim() : "";
-
-  return customerName || customerEmail || "";
-}
-
 module.exports = async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -33,11 +24,7 @@ module.exports = async function handler(request, response) {
     });
   }
 
-  // Kept as a required server-side Vercel env var for this integration setup.
-  // It is never exposed to the client.
-  const apiKey = process.env.LEMON_SQUEEZY_API_KEY;
-
-  if (!apiKey) {
+  if (!process.env.LEMON_SQUEEZY_API_KEY) {
     return sendJson(response, 500, {
       valid: false,
       error: "License validation is not configured."
@@ -54,21 +41,12 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    // Lemon Squeezy license validation expects a form-encoded body with `license_key`.
-    const requestBody = new URLSearchParams({
-      license_key: licenseKey
-    });
-
-    const lemonResponse = await fetch(LEMON_VALIDATE_URL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: requestBody.toString()
-    });
-
-    const lemonPayload = await lemonResponse.json().catch(() => null);
+    const { response: lemonResponse, payload: lemonPayload } = await callLemonLicenseEndpoint(
+      "https://api.lemonsqueezy.com/v1/licenses/validate",
+      {
+        license_key: licenseKey
+      }
+    );
 
     if (!lemonResponse.ok) {
       const isClientValidationFailure =
@@ -106,8 +84,7 @@ module.exports = async function handler(request, response) {
     }
 
     return sendJson(response, 200, {
-      valid: lemonPayload.valid,
-      licenseeName: lemonPayload.valid ? extractLicenseeName(lemonPayload) : ""
+      valid: lemonPayload.valid
     });
   } catch (error) {
     const errorPayload = {

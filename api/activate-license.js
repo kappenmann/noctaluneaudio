@@ -1,23 +1,18 @@
-const LEMON_ACTIVATE_URL = "https://api.lemonsqueezy.com/v1/licenses/activate";
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
+const {
+  callLemonLicenseEndpoint,
+  extractLicenseeName,
+  extractString
+} = require("./_lib/lemon-license");
+const {
+  buildActivationCertificate,
+  signActivationCertificate
+} = require("./_lib/license-certificate");
 
 function sendJson(response, status, payload) {
   response.status(status).setHeader("Content-Type", "application/json");
   response.setHeader("Cache-Control", "no-store");
   response.json(payload);
-}
-
-function extractString(value) {
-  return typeof value === "string" ? value.trim() : "";
-}
-
-function extractLicenseeName(payload) {
-  // Lemon Squeezy returns customer details in `meta`. Prefer the human-readable name,
-  // then fall back to the customer email, otherwise return an empty string.
-  const customerName = typeof payload?.meta?.customer_name === "string" ? payload.meta.customer_name.trim() : "";
-  const customerEmail = typeof payload?.meta?.customer_email === "string" ? payload.meta.customer_email.trim() : "";
-
-  return customerName || customerEmail || "";
 }
 
 module.exports = async function handler(request, response) {
@@ -29,11 +24,7 @@ module.exports = async function handler(request, response) {
     });
   }
 
-  // Kept as a required server-side Vercel env var for deployment parity with the licensing backend.
-  // It remains private and is never exposed to the client.
-  const apiKey = process.env.LEMON_SQUEEZY_API_KEY;
-
-  if (!apiKey) {
+  if (!process.env.LEMON_SQUEEZY_API_KEY) {
     return sendJson(response, 500, {
       activated: false,
       error: "License activation is not configured."
@@ -52,24 +43,49 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const requestBody = new URLSearchParams({
-      license_key: licenseKey
-    });
+    const validateResult = await callLemonLicenseEndpoint(
+      "https://api.lemonsqueezy.com/v1/licenses/validate",
+      {
+        license_key: licenseKey
+      }
+    );
 
-    if (instanceName) {
-      requestBody.append("instance_name", instanceName);
+    if (!validateResult.response.ok) {
+      const isClientValidationFailure =
+        validateResult.response.status === 400 ||
+        validateResult.response.status === 404 ||
+        validateResult.response.status === 422;
+
+      if (isClientValidationFailure) {
+        return sendJson(response, 200, { activated: false });
+      }
+
+      const errorPayload = {
+        activated: false,
+        error: "License validation service is currently unavailable."
+      };
+
+      if (!IS_PRODUCTION) {
+        errorPayload.upstreamStatus = validateResult.response.status;
+      }
+
+      return sendJson(response, 502, errorPayload);
     }
 
-    const lemonResponse = await fetch(LEMON_ACTIVATE_URL, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: requestBody.toString()
-    });
+    if (!validateResult.payload || validateResult.payload.valid !== true) {
+      return sendJson(response, 200, { activated: false });
+    }
 
-    const lemonPayload = await lemonResponse.json().catch(() => null);
+    const activationBody = { license_key: licenseKey };
+
+    if (instanceName) {
+      activationBody.instance_name = instanceName;
+    }
+
+    const { response: lemonResponse, payload: lemonPayload } = await callLemonLicenseEndpoint(
+      "https://api.lemonsqueezy.com/v1/licenses/activate",
+      activationBody
+    );
 
     if (!lemonResponse.ok) {
       const isClientActivationFailure =
@@ -106,9 +122,19 @@ module.exports = async function handler(request, response) {
       return sendJson(response, 502, malformedPayload);
     }
 
+    const licenseeName = extractLicenseeName(lemonPayload);
+    const activationCertificate = buildActivationCertificate({
+      licenseKey,
+      licenseeName,
+      instanceName
+    });
+    const activationSignature = signActivationCertificate(activationCertificate);
+
     return sendJson(response, 200, {
       activated: lemonPayload.activated,
-      licenseeName: lemonPayload.activated ? extractLicenseeName(lemonPayload) : ""
+      licenseeName,
+      activationCertificate,
+      activationSignature
     });
   } catch (error) {
     const errorPayload = {
