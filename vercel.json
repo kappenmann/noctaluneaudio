@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/Downloads/NoctaTape_v1.0.1.zip",
+      "destination": "https://github.com/kappenmann/Noctatape/releases/download/NoctaTape_v1.0.1/NoctaTape_v1.0.1.zip",
+      "permanent": false
+    }
+  ]
+}
