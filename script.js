@@ -78,7 +78,7 @@ if (signupForm && feedback) {
       if (submitButton instanceof HTMLButtonElement) {
         submitButton.disabled = false;
         submitButton.classList.remove("is-loading");
-        submitButton.textContent = originalLabel || "Notify Me";
+        submitButton.textContent = originalLabel || "Subscribe";
       }
     }
   });

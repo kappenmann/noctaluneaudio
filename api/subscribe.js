@@ -1,5 +1,5 @@
 const BREVO_API_URL = "https://api.brevo.com/v3/contacts";
-const DEFAULT_BREVO_LIST_ID = 3;
+const DEFAULT_BREVO_LIST_ID = 4;
 const BREVO_LIST_ID = process.env.BREVO_LIST_ID ? Number(process.env.BREVO_LIST_ID) : DEFAULT_BREVO_LIST_ID;
 
 function sendJson(response, status, payload) {
@@ -61,7 +61,7 @@ module.exports = async function handler(request, response) {
 
       if (duplicateOrKnownContact) {
         return sendJson(response, 200, {
-          message: "You're already on the list. We'll keep you posted."
+          message: "You're already subscribed. We'll keep you posted."
         });
       }
 
@@ -71,7 +71,7 @@ module.exports = async function handler(request, response) {
     }
 
     return sendJson(response, 200, {
-      message: "Thanks for signing up. You're on the early access list."
+      message: "Thanks for subscribing. You're on the newsletter list."
     });
   } catch (error) {
     return sendJson(response, 500, {
