@@ -741,6 +741,7 @@ p {
 
 .shop-discount {
   width: fit-content;
+  margin-top: 0.45rem;
   padding: 0.55rem 0.9rem;
   border-radius: 999px;
   color: var(--muted-strong);
