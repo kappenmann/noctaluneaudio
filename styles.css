@@ -661,8 +661,135 @@ p {
   position: sticky;
 }
 
+.site-nav a[aria-current="page"] {
+  color: var(--muted-strong);
+}
+
+.site-nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
 .legal-main {
   padding: 4.5rem 0 5rem;
+}
+
+.shop-main {
+  padding: 3.8rem 0 5rem;
+}
+
+.shop-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.shop-hero-card {
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top left, rgba(194, 143, 85, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(36, 29, 29, 0.96), rgba(22, 18, 18, 0.96));
+}
+
+.shop-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 1.02fr);
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.shop-copy > * {
+  max-width: 34rem;
+}
+
+.shop-subheadline {
+  font-size: 1.06rem;
+  margin-top: 1rem;
+}
+
+.shop-price-block {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 1.35rem;
+}
+
+.shop-price-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.shop-price {
+  color: var(--text);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.35rem, 4vw, 3.4rem);
+  line-height: 0.95;
+}
+
+.shop-price-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.shop-discount {
+  width: fit-content;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  color: var(--muted-strong);
+  background: rgba(201, 154, 94, 0.1);
+  border: 1px solid rgba(210, 169, 111, 0.2);
+  font-size: 0.92rem;
+}
+
+.shop-discount strong {
+  color: var(--text);
+}
+
+.shop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.shop-checkout-note {
+  margin-top: 0.95rem;
+  font-size: 0.94rem;
+  color: #d0bea8;
+}
+
+.shop-visual {
+  transform: none;
+  width: min(100%, 43rem);
+  margin-left: auto;
+}
+
+.shop-section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.shop-get-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.shop-spec-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.shop-summary-panel {
+  margin-top: 0.5rem;
+}
+
+.shop-summary-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.shop-summary-actions .button {
+  width: 100%;
 }
 
 .legal-shell {
@@ -784,6 +911,7 @@ p {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .shop-hero-grid,
   .hero-grid,
   .story-grid,
   .signup-panel,
@@ -802,6 +930,19 @@ p {
   .hero-visual {
     width: min(100%, 38rem);
     margin: 0 auto;
+  }
+
+  .shop-visual {
+    width: min(100%, 38rem);
+    margin: 0 auto;
+  }
+
+  .shop-get-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .shop-spec-grid {
+    grid-template-columns: 1fr;
   }
 
   .footer-inner {
@@ -863,6 +1004,14 @@ p {
     transform: none;
     width: min(100%, 26rem);
     margin: 0 auto;
+  }
+
+  .shop-main {
+    padding: 3rem 0 3.4rem;
+  }
+
+  .shop-hero-card {
+    padding: 1.2rem;
   }
 
   .hero {
@@ -948,6 +1097,28 @@ p {
     margin-top: 0.18rem;
   }
 
+  .shop-actions {
+    display: contents;
+  }
+
+  .shop-actions .button-primary,
+  .shop-actions .button-secondary {
+    width: 100%;
+    min-height: 3.1rem;
+  }
+
+  .shop-actions .button-primary {
+    margin-top: 0.55rem;
+  }
+
+  .shop-actions .button-secondary {
+    margin-top: 0.18rem;
+  }
+
+  .shop-checkout-note {
+    margin-top: 0.7rem;
+  }
+
   .plugin-stage {
     padding: 0.5rem;
     border-radius: 24px;
@@ -960,7 +1131,8 @@ p {
   .feature-card,
   .demo-card,
   .story-panel,
-  .signup-panel {
+  .signup-panel,
+  .shop-hero-card {
     padding: 1.2rem;
   }
 
@@ -1082,6 +1254,20 @@ p {
 
   .footer-social {
     gap: 0.55rem;
+  }
+
+  .shop-main {
+    padding: 2.6rem 0 3rem;
+  }
+
+  .shop-price {
+    font-size: clamp(2rem, 10vw, 2.55rem);
+  }
+
+  .shop-subheadline,
+  .shop-checkout-note,
+  .shop-discount {
+    font-size: 0.88rem;
   }
 }
 
