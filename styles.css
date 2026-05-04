@@ -693,9 +693,16 @@ p {
 
 .shop-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 1.02fr);
+  grid-template-columns: minmax(0, 0.94fr) minmax(360px, 1.02fr);
   align-items: center;
-  gap: 1.2rem;
+  gap: 1.8rem;
+}
+
+.shop-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
 }
 
 .shop-copy > * {
@@ -717,7 +724,7 @@ p {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.55rem 0.9rem;
 }
 
 .shop-price {
@@ -730,6 +737,7 @@ p {
 .shop-price-note {
   color: var(--muted);
   font-size: 0.92rem;
+  padding-bottom: 0.28rem;
 }
 
 .shop-discount {
@@ -751,6 +759,7 @@ p {
   flex-wrap: wrap;
   gap: 1rem;
   margin-top: 1.5rem;
+  align-items: center;
 }
 
 .shop-checkout-note {
@@ -762,7 +771,8 @@ p {
 .shop-visual {
   transform: none;
   width: min(100%, 43rem);
-  margin-left: auto;
+  margin: 0 0 0 auto;
+  align-self: center;
 }
 
 .shop-section {
