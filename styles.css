@@ -693,20 +693,19 @@ p {
 
 .shop-hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.94fr) minmax(360px, 1.02fr);
+  grid-template-columns: minmax(0, 0.92fr) minmax(380px, 1.08fr);
   align-items: center;
-  gap: 1.8rem;
+  gap: 2.4rem;
 }
 
 .shop-copy {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100%;
+  width: min(100%, 32rem);
+  margin: 0 auto;
+  align-self: center;
 }
 
 .shop-copy > * {
-  max-width: 34rem;
+  max-width: none;
 }
 
 .shop-subheadline {
@@ -724,7 +723,7 @@ p {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 0.55rem 0.9rem;
+  gap: 0.45rem 0.85rem;
 }
 
 .shop-price {
@@ -737,7 +736,7 @@ p {
 .shop-price-note {
   color: var(--muted);
   font-size: 0.92rem;
-  padding-bottom: 0.28rem;
+  padding-bottom: 0.2rem;
 }
 
 .shop-discount {
@@ -770,8 +769,8 @@ p {
 
 .shop-visual {
   transform: none;
-  width: min(100%, 43rem);
-  margin: 0 0 0 auto;
+  width: min(100%, 42rem);
+  margin: 0 auto;
   align-self: center;
 }
 
