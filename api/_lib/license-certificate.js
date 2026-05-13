@@ -4,16 +4,36 @@ const PRODUCT_NAME = "NoctaTape";
 const SIGNATURE_ALGORITHM = "RSA-SHA256";
 const SIGNATURE_PADDING = crypto.constants.RSA_PKCS1_PADDING;
 
-function buildActivationCertificate({ licenseKey, licenseeName, instanceName }) {
+function buildActivationCertificate({
+  licenseKey,
+  licenseeName,
+  instanceName,
+  productName = PRODUCT_NAME,
+  productId,
+  entitlementId,
+  licenseSource
+}) {
   // Key order is intentionally fixed so JSON.stringify produces a deterministic string
   // for signing and later verification inside the JUCE plugin.
   const certificate = {
     licenseKey,
     licenseeName,
-    product: PRODUCT_NAME,
+    product: productName,
     instanceName,
     issuedAt: new Date().toISOString()
   };
+
+  if (productId) {
+    certificate.productId = productId;
+  }
+
+  if (entitlementId) {
+    certificate.entitlementId = entitlementId;
+  }
+
+  if (licenseSource) {
+    certificate.licenseSource = licenseSource;
+  }
 
   return JSON.stringify(certificate);
 }

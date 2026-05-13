@@ -2,14 +2,17 @@ const IS_PRODUCTION = process.env.NODE_ENV === "production";
 const {
   callLemonLicenseEndpoint,
   extractLicenseeName,
-  extractString
+  extractString,
+  LEMON_ACTIVATE_URL,
+  LEMON_VALIDATE_URL
 } = require("./_lib/lemon-license");
 const {
+  getRequestedProductId,
+  resolveLicenseEntitlement
+} = require("./_lib/license-entitlements");
+const {
   buildActivationCertificate,
-  getPublicKeyFingerprint,
   loadPrivateKeyPem,
-  SIGNATURE_ALGORITHM,
-  SIGNATURE_PADDING,
   signActivationCertificate,
   verifyActivationSignature
 } = require("./_lib/license-certificate");
@@ -39,6 +42,7 @@ module.exports = async function handler(request, response) {
   const body = request.body && typeof request.body === "object" ? request.body : {};
   const licenseKey = extractString(body.licenseKey);
   const instanceName = extractString(body.instanceName);
+  const requestedProductId = getRequestedProductId(body);
 
   if (!licenseKey) {
     return sendJson(response, 400, {
@@ -48,12 +52,8 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const privateKeyPem = loadPrivateKeyPem();
-    console.log("[activate-license] signing key present:", true);
-    console.log("[activate-license] public key fingerprint (sha256):", getPublicKeyFingerprint(privateKeyPem));
-
     const validateResult = await callLemonLicenseEndpoint(
-      "https://api.lemonsqueezy.com/v1/licenses/validate",
+      LEMON_VALIDATE_URL,
       {
         license_key: licenseKey
       }
@@ -85,6 +85,14 @@ module.exports = async function handler(request, response) {
       return sendJson(response, 200, { activated: false });
     }
 
+    const entitlement = resolveLicenseEntitlement(validateResult.payload, requestedProductId);
+
+    if (!entitlement.authorized) {
+      return sendJson(response, 200, { activated: false });
+    }
+
+    const privateKeyPem = loadPrivateKeyPem();
+
     const activationBody = { license_key: licenseKey };
 
     if (instanceName) {
@@ -92,7 +100,7 @@ module.exports = async function handler(request, response) {
     }
 
     const { response: lemonResponse, payload: lemonPayload } = await callLemonLicenseEndpoint(
-      "https://api.lemonsqueezy.com/v1/licenses/activate",
+      LEMON_ACTIVATE_URL,
       activationBody
     );
 
@@ -131,18 +139,19 @@ module.exports = async function handler(request, response) {
       return sendJson(response, 502, malformedPayload);
     }
 
+    if (lemonPayload.activated !== true) {
+      return sendJson(response, 200, { activated: false });
+    }
+
     const licenseeName = extractLicenseeName(lemonPayload);
     const activationCertificate = buildActivationCertificate({
       licenseKey,
       licenseeName,
-      instanceName
-    });
-
-    console.log("[activate-license] activationCertificate:", activationCertificate);
-    console.log("[activate-license] signature config:", {
-      algorithm: SIGNATURE_ALGORITHM,
-      padding: SIGNATURE_PADDING,
-      encoding: "utf8-to-base64"
+      instanceName,
+      productName: entitlement.certificateProductName,
+      productId: entitlement.productId,
+      entitlementId: entitlement.entitlementId,
+      licenseSource: entitlement.licenseSource
     });
 
     const activationSignature = signActivationCertificate(activationCertificate, privateKeyPem);
@@ -152,7 +161,9 @@ module.exports = async function handler(request, response) {
       privateKeyPem
     );
 
-    console.log("[activate-license] signature self-check:", signatureSelfCheck);
+    if (!signatureSelfCheck) {
+      throw new Error("Activation signature self-check failed.");
+    }
 
     const responseBody = {
       activated: lemonPayload.activated,
@@ -160,14 +171,6 @@ module.exports = async function handler(request, response) {
       activationCertificate,
       activationSignature
     };
-
-    console.log("[activate-license] response shape:", {
-      activated: responseBody.activated,
-      licenseeName: responseBody.licenseeName,
-      activationCertificateLength: responseBody.activationCertificate.length,
-      activationSignatureLength: responseBody.activationSignature.length,
-      signatureSelfCheck
-    });
 
     return sendJson(response, 200, responseBody);
   } catch (error) {

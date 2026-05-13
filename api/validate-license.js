@@ -1,18 +1,18 @@
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
-const { callLemonLicenseEndpoint } = require("./_lib/lemon-license");
+const {
+  callLemonLicenseEndpoint,
+  extractString,
+  LEMON_VALIDATE_URL
+} = require("./_lib/lemon-license");
+const {
+  getRequestedProductId,
+  resolveLicenseEntitlement
+} = require("./_lib/license-entitlements");
 
 function sendJson(response, status, payload) {
   response.status(status).setHeader("Content-Type", "application/json");
   response.setHeader("Cache-Control", "no-store");
   response.json(payload);
-}
-
-function extractLicenseKey(body) {
-  if (!body || typeof body !== "object") {
-    return "";
-  }
-
-  return typeof body.licenseKey === "string" ? body.licenseKey.trim() : "";
 }
 
 module.exports = async function handler(request, response) {
@@ -31,7 +31,9 @@ module.exports = async function handler(request, response) {
     });
   }
 
-  const licenseKey = extractLicenseKey(request.body);
+  const body = request.body && typeof request.body === "object" ? request.body : {};
+  const licenseKey = extractString(body.licenseKey);
+  const requestedProductId = getRequestedProductId(body);
 
   if (!licenseKey) {
     return sendJson(response, 400, {
@@ -42,7 +44,7 @@ module.exports = async function handler(request, response) {
 
   try {
     const { response: lemonResponse, payload: lemonPayload } = await callLemonLicenseEndpoint(
-      "https://api.lemonsqueezy.com/v1/licenses/validate",
+      LEMON_VALIDATE_URL,
       {
         license_key: licenseKey
       }
@@ -83,8 +85,10 @@ module.exports = async function handler(request, response) {
       return sendJson(response, 502, malformedPayload);
     }
 
+    const entitlement = resolveLicenseEntitlement(lemonPayload, requestedProductId);
+
     return sendJson(response, 200, {
-      valid: lemonPayload.valid
+      valid: entitlement.authorized
     });
   } catch (error) {
     const errorPayload = {
