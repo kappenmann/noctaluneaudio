@@ -683,6 +683,78 @@ p {
   gap: 1.5rem;
 }
 
+.shop-intro {
+  padding: 1.8rem 2rem;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top left, rgba(194, 143, 85, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(36, 29, 29, 0.96), rgba(22, 18, 18, 0.96));
+}
+
+.shop-intro h1 {
+  max-width: 12ch;
+  margin-bottom: 1rem;
+}
+
+.shop-catalog {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.shop-product-card {
+  display: grid;
+  grid-template-columns: minmax(320px, 1.02fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: 1.7rem;
+  padding: 1.6rem;
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, rgba(40, 30, 29, 0.96), rgba(22, 18, 18, 0.94));
+}
+
+.shop-product-media {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(54, 39, 33, 0.92), rgba(18, 15, 15, 0.96)),
+    linear-gradient(135deg, rgba(212, 169, 104, 0.08), rgba(255, 255, 255, 0));
+  border: 1px solid rgba(177, 136, 93, 0.14);
+  box-shadow:
+    0 26px 70px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 227, 174, 0.06);
+}
+
+.shop-product-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.shop-product-copy {
+  width: min(100%, 31rem);
+}
+
+.shop-product-description {
+  max-width: 30rem;
+  font-size: 1rem;
+  margin-top: 0.9rem;
+}
+
+.shop-card-price {
+  margin-top: 1.25rem;
+  color: var(--text);
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.1rem, 4vw, 3rem);
+  line-height: 0.98;
+}
+
+.shop-card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-top: 1.25rem;
+}
+
 .shop-hero-card {
   padding: 2rem;
   border-radius: var(--radius-lg);
@@ -921,6 +993,7 @@ p {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .shop-product-card,
   .shop-hero-grid,
   .hero-grid,
   .story-grid,
@@ -945,6 +1018,10 @@ p {
   .shop-visual {
     width: min(100%, 38rem);
     margin: 0 auto;
+  }
+
+  .shop-product-copy {
+    width: 100%;
   }
 
   .shop-get-grid {
@@ -1021,6 +1098,11 @@ p {
   }
 
   .shop-hero-card {
+    padding: 1.2rem;
+  }
+
+  .shop-intro,
+  .shop-product-card {
     padding: 1.2rem;
   }
 
@@ -1109,6 +1191,16 @@ p {
 
   .shop-actions {
     display: contents;
+  }
+
+  .shop-card-actions {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .shop-card-actions .button {
+    width: 100%;
   }
 
   .shop-actions .button-primary,
@@ -1272,6 +1364,10 @@ p {
 
   .shop-price {
     font-size: clamp(2rem, 10vw, 2.55rem);
+  }
+
+  .shop-card-price {
+    font-size: clamp(1.9rem, 9vw, 2.35rem);
   }
 
   .shop-subheadline,
