@@ -685,15 +685,23 @@ p {
 
 .shop-intro {
   padding: 1.8rem 2rem;
+  width: min(100%, 68rem);
+  margin: 0 auto;
   border-radius: var(--radius-lg);
   background:
     radial-gradient(circle at top left, rgba(194, 143, 85, 0.12), transparent 34%),
     linear-gradient(180deg, rgba(36, 29, 29, 0.96), rgba(22, 18, 18, 0.96));
+  min-height: 0;
 }
 
 .shop-intro h1 {
-  max-width: 12ch;
-  margin-bottom: 1rem;
+  max-width: 9.5ch;
+  margin-bottom: 0.8rem;
+}
+
+.shop-intro .shop-subheadline {
+  max-width: 46rem;
+  margin-top: 0;
 }
 
 .shop-catalog {
@@ -1104,6 +1112,10 @@ p {
   .shop-intro,
   .shop-product-card {
     padding: 1.2rem;
+  }
+
+  .shop-intro h1 {
+    max-width: none;
   }
 
   .hero {
