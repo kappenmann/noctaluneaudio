@@ -3,6 +3,7 @@ const {
   callLemonLicenseEndpoint,
   extractLicenseeName,
   extractString,
+  findLicenseInstanceByName,
   LEMON_ACTIVATE_URL,
   LEMON_VALIDATE_URL
 } = require("./_lib/lemon-license");
@@ -51,6 +52,13 @@ module.exports = async function handler(request, response) {
     });
   }
 
+  if (!instanceName) {
+    return sendJson(response, 400, {
+      activated: false,
+      error: "An instance name is required."
+    });
+  }
+
   try {
     const validateResult = await callLemonLicenseEndpoint(
       LEMON_VALIDATE_URL,
@@ -93,50 +101,77 @@ module.exports = async function handler(request, response) {
 
     const privateKeyPem = loadPrivateKeyPem();
 
-    const activationBody = { license_key: licenseKey };
-
-    if (instanceName) {
-      activationBody.instance_name = instanceName;
+    let existingInstance = null;
+    try {
+      existingInstance = await findLicenseInstanceByName(
+        validateResult.payload?.license_key?.id,
+        instanceName
+      );
+    } catch (instanceLookupError) {
+      console.warn("[activate-license] Existing instance lookup failed; trying a new activation.");
     }
 
-    const { response: lemonResponse, payload: lemonPayload } = await callLemonLicenseEndpoint(
-      LEMON_ACTIVATE_URL,
-      activationBody
-    );
+    let lemonPayload;
+    let reusedExistingInstance = false;
 
-    if (!lemonResponse.ok) {
-      const isClientActivationFailure =
-        lemonResponse.status === 400 ||
-        lemonResponse.status === 404 ||
-        lemonResponse.status === 422;
-
-      if (isClientActivationFailure) {
-        return sendJson(response, 200, { activated: false });
-      }
-
-      const errorPayload = {
-        activated: false,
-        error: "License activation service is currently unavailable."
+    if (existingInstance?.id) {
+      lemonPayload = {
+        activated: true,
+        license_key: validateResult.payload.license_key,
+        instance: existingInstance,
+        meta: validateResult.payload.meta
+      };
+      reusedExistingInstance = true;
+    } else {
+      const activationBody = {
+        license_key: licenseKey,
+        instance_name: instanceName
       };
 
-      if (!IS_PRODUCTION) {
-        errorPayload.upstreamStatus = lemonResponse.status;
+      const activationResult = await callLemonLicenseEndpoint(
+        LEMON_ACTIVATE_URL,
+        activationBody
+      );
+      const lemonResponse = activationResult.response;
+      lemonPayload = activationResult.payload;
+
+      if (!lemonResponse.ok) {
+        const isClientActivationFailure =
+          lemonResponse.status === 400 ||
+          lemonResponse.status === 404 ||
+          lemonResponse.status === 422;
+
+        if (isClientActivationFailure) {
+          return sendJson(response, 200, {
+            activated: false,
+            error: extractString(lemonPayload?.error) || "License activation failed."
+          });
+        }
+
+        const errorPayload = {
+          activated: false,
+          error: "License activation service is currently unavailable."
+        };
+
+        if (!IS_PRODUCTION) {
+          errorPayload.upstreamStatus = lemonResponse.status;
+        }
+
+        return sendJson(response, 502, errorPayload);
       }
 
-      return sendJson(response, 502, errorPayload);
-    }
+      if (!lemonPayload || typeof lemonPayload !== "object" || typeof lemonPayload.activated !== "boolean") {
+        const malformedPayload = {
+          activated: false,
+          error: "Received an unexpected response from the license service."
+        };
 
-    if (!lemonPayload || typeof lemonPayload !== "object" || typeof lemonPayload.activated !== "boolean") {
-      const malformedPayload = {
-        activated: false,
-        error: "Received an unexpected response from the license service."
-      };
+        if (!IS_PRODUCTION) {
+          malformedPayload.upstreamStatus = lemonResponse.status;
+        }
 
-      if (!IS_PRODUCTION) {
-        malformedPayload.upstreamStatus = lemonResponse.status;
+        return sendJson(response, 502, malformedPayload);
       }
-
-      return sendJson(response, 502, malformedPayload);
     }
 
     if (lemonPayload.activated !== true) {
@@ -151,7 +186,8 @@ module.exports = async function handler(request, response) {
       productName: entitlement.certificateProductName,
       productId: entitlement.productId,
       entitlementId: entitlement.entitlementId,
-      licenseSource: entitlement.licenseSource
+      licenseSource: entitlement.licenseSource,
+      instanceId: extractString(lemonPayload?.instance?.id)
     });
 
     const activationSignature = signActivationCertificate(activationCertificate, privateKeyPem);
@@ -169,7 +205,9 @@ module.exports = async function handler(request, response) {
       activated: lemonPayload.activated,
       licenseeName,
       activationCertificate,
-      activationSignature
+      activationSignature,
+      reusedExistingInstance,
+      instanceId: extractString(lemonPayload?.instance?.id)
     };
 
     return sendJson(response, 200, responseBody);

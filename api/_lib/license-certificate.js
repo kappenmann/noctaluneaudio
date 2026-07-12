@@ -11,7 +11,8 @@ function buildActivationCertificate({
   productName = PRODUCT_NAME,
   productId,
   entitlementId,
-  licenseSource
+  licenseSource,
+  instanceId
 }) {
   // Key order is intentionally fixed so JSON.stringify produces a deterministic string
   // for signing and later verification inside the JUCE plugin.
@@ -33,6 +34,10 @@ function buildActivationCertificate({
 
   if (licenseSource) {
     certificate.licenseSource = licenseSource;
+  }
+
+  if (instanceId) {
+    certificate.instanceId = instanceId;
   }
 
   return JSON.stringify(certificate);

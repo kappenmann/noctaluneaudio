@@ -88,11 +88,13 @@ const BUNDLES = parseJsonConfig("LEMON_LICENSE_BUNDLES_JSON", {
   all_plugins: {
     variantIds: parseIdList(
       process.env.LEMON_ALL_PLUGINS_BUNDLE_VARIANT_IDS ||
-        process.env.LEMON_BUNDLE_ALL_PLUGINS_VARIANT_IDS
+        process.env.LEMON_BUNDLE_ALL_PLUGINS_VARIANT_IDS ||
+        "1649605"
     ),
     productIds: parseIdList(
       process.env.LEMON_ALL_PLUGINS_BUNDLE_PRODUCT_IDS ||
-        process.env.LEMON_BUNDLE_ALL_PLUGINS_PRODUCT_IDS
+        process.env.LEMON_BUNDLE_ALL_PLUGINS_PRODUCT_IDS ||
+        "1051836"
     ),
     grants: parseIdList(process.env.LEMON_ALL_PLUGINS_BUNDLE_GRANTS || "noctatape")
   }
