@@ -709,6 +709,58 @@ p {
   gap: 1.5rem;
 }
 
+.download-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+
+.download-card {
+  display: grid;
+  align-content: space-between;
+  gap: 1.5rem;
+  min-height: 20rem;
+  padding: 1.7rem;
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at top right, rgba(194, 143, 85, 0.12), transparent 34%),
+    linear-gradient(180deg, rgba(40, 30, 29, 0.96), rgba(22, 18, 18, 0.94));
+}
+
+.download-platform {
+  width: fit-content;
+  margin-bottom: 1rem;
+  padding: 0.52rem 0.82rem;
+  border-radius: 999px;
+  color: var(--muted-strong);
+  background: rgba(201, 154, 94, 0.1);
+  border: 1px solid rgba(210, 169, 111, 0.2);
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.download-card h2 {
+  max-width: none;
+  font-size: clamp(2.1rem, 3.8vw, 3.2rem);
+}
+
+.download-copy {
+  max-width: 30rem;
+  margin-top: 1rem;
+}
+
+.download-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+}
+
+.download-actions .button {
+  min-width: 12rem;
+}
+
 .shop-product-card {
   display: grid;
   grid-template-columns: minmax(320px, 1.02fr) minmax(0, 0.9fr);
@@ -1010,6 +1062,10 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .download-grid {
+    grid-template-columns: 1fr;
+  }
+
   .hero-grid {
     gap: 1.35rem;
   }
@@ -1110,7 +1166,8 @@ p {
   }
 
   .shop-intro,
-  .shop-product-card {
+  .shop-product-card,
+  .download-card {
     padding: 1.2rem;
   }
 
@@ -1213,6 +1270,10 @@ p {
   }
 
   .shop-card-actions .button {
+    width: 100%;
+  }
+
+  .download-actions .button {
     width: 100%;
   }
 
