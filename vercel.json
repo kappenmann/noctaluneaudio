@@ -16,6 +16,11 @@
       "permanent": false
     },
     {
+      "source": "/Downloads/NoctaTape_v1.2.0_win_AAX.zip",
+      "destination": "https://github.com/kappenmann/Noctatape/releases/download/NoctaTape_v1.2.0_win/NoctaTape_v1.2.0_win_AAX.zip",
+      "permanent": false
+    },
+    {
       "source": "/Downloads/NoctaTape_v1.2.0_macOS_Universal.zip",
       "destination": "https://github.com/kappenmann/Noctatape/releases/download/NoctaTape_v1.2.0_macOS_universal/NoctaTape_v1.2.0_macOS_Universal.zip",
       "permanent": false
