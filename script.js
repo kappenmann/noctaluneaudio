@@ -3,6 +3,7 @@ const signupForm = document.getElementById("email-signup-form");
 const feedback = document.getElementById("form-feedback");
 const submitButton = document.getElementById("signup-submit");
 const demoPlayers = document.querySelectorAll(".demo-player");
+const youtubeFacades = document.querySelectorAll(".youtube-facade[data-youtube-id]");
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -118,3 +119,24 @@ if (demoPlayers.length > 0) {
     });
   });
 }
+
+youtubeFacades.forEach((facade) => {
+  const loadButton = facade.querySelector(".youtube-facade__button");
+  const videoId = facade.dataset.youtubeId;
+
+  if (!(loadButton instanceof HTMLButtonElement) || !videoId) {
+    return;
+  }
+
+  loadButton.addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0`;
+    iframe.title = "NoctaTape preset tour";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.referrerPolicy = "strict-origin-when-cross-origin";
+    iframe.allowFullscreen = true;
+
+    facade.classList.add("is-loaded");
+    facade.replaceChildren(iframe);
+  }, { once: true });
+});
